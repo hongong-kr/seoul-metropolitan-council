@@ -1,5 +1,7 @@
 # Audit Monitor
 
+> Korean version: [SKILL.ko.md](SKILL.ko.md)
+
 ## Purpose
 
 - Monitor a legislative council's administrative audit livestream, send real-time alerts to a group channel, and produce minutes in two stages: provisional, then corrected.

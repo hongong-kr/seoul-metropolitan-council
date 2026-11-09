@@ -2,6 +2,8 @@
 
 A reusable skill for monitoring a legislative council's administrative audit livestream: real-time alerts to a group channel, and minutes in two stages (provisional, then corrected).
 
+> Korean version: [README.ko.md](README.ko.md) · [SKILL.ko.md](SKILL.ko.md)
+
 ## What it covers
 
 - **Pre-session prep** — briefing material, committee roster, and schedule checks.
