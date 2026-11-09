@@ -1,34 +1,68 @@
-# seoul-metropolitan-council
+🌐 [한국어](README.md) | [English](README.en.md)
 
-A reusable skill for monitoring a legislative council's administrative audit livestream: real-time alerts to a group channel, and minutes in two stages (provisional, then corrected).
+![감사 모니터링](assets/banner.svg)
 
-> Korean version: [README.ko.md](README.ko.md) · [SKILL.ko.md](SKILL.ko.md)
+# 감사 모니터링
 
-## What it covers
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![한국어](https://img.shields.io/badge/lang-%ED%95%9C%EA%B5%AD%EC%96%B4-blue.svg)](README.md)
+[![English](https://img.shields.io/badge/lang-English-green.svg)](README.en.md)
+[![Skill](https://img.shields.io/badge/skill-audit--monitor-orange.svg)](SKILL.md)
 
-- **Pre-session prep** — briefing material, committee roster, and schedule checks.
-- **Live monitoring** — about every 5 minutes; alerts for start, recess, resume, end, and relevant hits.
-- **Subtitle-state handling** — a six-case decision tree for when captions are live, missing, stalled, or recovering.
-- **Gap recording** — how to log unconfirmed ranges without inventing coverage.
-- **Documents** — provisional minutes from the VOD (ASR), corrected minutes after the official transcript, with a live table for the audited body's own hearing day.
-- **Message templates** — opening notice, day plan, hearing-day notice, live-update alert, document notices, daily closing, and closing feedback request.
-- **Tooling references** — open-source recording (yt-dlp, streamlink), transcription (WhisperX, WhisperLiveKit), and interval caption checks (jiffshot) to fill the gaps a manual leaves to the operator.
+지방의회 행정사무감사 생중계, AI에게 맡기세요. 감시 기간 내내 생중계를 지켜보고, 관련 질의가 나오면 그룹에 바로 알리고, 회의록은 잠정본에서 정정본까지 두 단계로 정리합니다.
 
-## How to use
+Claude Code, Codex, Muse 등 스킬을 읽는 AI 에이전트에서 쓸 수 있습니다.
 
-Copy `SKILL.md` into your AI agent's skills directory and adapt the placeholders:
+## 이 스킬이 하는 일
 
-- `[target institution]`, `[Operator role]`, `[Operator name]`
-- `[monitoring period]`, `[hearing day]`, `[closing notice time]`
-- `[Feedback survey URL]`
-- The reference URLs under "Pre-session prep" (the example is Seoul Metropolitan Council)
+| 기능 | 설명 |
+| --- | --- |
+| 📋 회기 전 준비 | 브리핑 자료, 당일 위원회 명단·일정 확인 |
+| 📺 실시간 모니터링 | 약 5분 간격 확인 — 개시·정회·재개·종료와 관련 포착 사항 알림 |
+| 💬 자막 상태 대응 | 자막 있음·없음·멈춤·복구 등 6가지 경우별 판단 기준 |
+| 📝 회의록 (2단계) | 영상회의록(VOD) 기반 잠정본 → 공식 문자 회의록 대조 후 정정본 |
+| 🏛️ 청문일 실시간 문서 | 수감기관 본인 청문일에는 위원별 질의·답변·요구자료 표를 실시간 갱신 |
+| 💬 메시지 틀 | 개설 안내·당일 감시계획·청문일 안내·실시간 갱신 알림·마감·종료 안내까지 그대로 쓰는 틀 |
+| 🛠️ 도구 참고자료 | 녹화(yt-dlp·streamlink), 전사(WhisperX·WhisperLiveKit), 간격 자막 확인(jiffshot) |
 
-The skill is written to be generic: no real names, no internal channels, no fixed dates.
+## 어떻게 돌아가나
 
-## Origin
+```mermaid
+flowchart LR
+    A[회기 전 준비] --> B[생중계 모니터링<br/>약 5분 간격]
+    B --> C[실시간 알림]
+    B --> D[청문일 실시간 문서]
+    D --> E[VOD 공개<br/>잠정본 작성]
+    E --> F[공식 회의록 대조<br/>정정본 갱신]
+```
 
-Distilled from an operating manual used for a 2026 council audit monitoring run (Nov 6–13), plus reference implementations found on GitHub for transcription and real-time monitoring. The manual's procedures were generalized; its internal details were removed.
+## 설치
 
-## License
+```bash
+# 한글판 설치
+mkdir -p ~/.claude/skills/audit-monitor
+cp SKILL.ko.md ~/.claude/skills/audit-monitor/SKILL.md
 
-MIT. See [LICENSE](LICENSE).
+# 영문판 설치
+cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md
+```
+
+설치한 뒤 자리표시자만 바꾸면 됩니다.
+
+- `[대상 기관]`, `[운영자 직위]`, `[운영자 성명]`
+- `[감시 기간]`, `[청문일]`, `[종료 설문 URL]`
+- "회기 전 준비"에 있는 참조 URL (예시는 서울특별시의회)
+
+스킬은 범용으로 썼습니다. 실명, 내부 채널, 고정된 날짜는 들어 있지 않습니다.
+
+## 잠깐만
+
+⭐ 마음에 들면 스타 하나 눌러주세요. 다음 감사 때 또 쓰게 될 겁니다.
+
+## 출처
+
+2026년 의회 감사 모니터링 운영(11월 6~13일)에 쓴 업무 매뉴얼의 절차를 일반화한 것입니다. 내부 세부사항은 뺐습니다. 전사와 실시간 모니터링 참고자료는 깃허브에서 찾았습니다.
+
+## 라이선스
+
+MIT. [LICENSE](LICENSE) 파일 참고.
