@@ -41,18 +41,15 @@ flowchart LR
 ## Install
 
 ```bash
-# Korean version
+# Copy into your AI's skills directory (Claude Code example below)
 mkdir -p ~/.claude/skills/audit-monitor
-cp SKILL.ko.md ~/.claude/skills/audit-monitor/SKILL.md
-
-# English version
-cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md
+cp SKILL.ko.md ~/.claude/skills/audit-monitor/SKILL.md  # Korean version
+# cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md  # English version
 ```
 
 Then adapt the placeholders:
 
 - `[target institution]`, `[Operator role]`, `[Operator name]`
-- `[monitoring period]`, `[hearing day]`, `[closing notice time]`
 - `[Feedback survey URL]`
 - The reference URLs under "Pre-session prep" (the example is Seoul Metropolitan Council)
 

@@ -41,18 +41,16 @@ flowchart LR
 ## 설치
 
 ```bash
-# 한글판 설치
+# 사용하는 AI의 스킬 디렉터리에 복사한다 (아래는 Claude Code 예시)
 mkdir -p ~/.claude/skills/audit-monitor
-cp SKILL.ko.md ~/.claude/skills/audit-monitor/SKILL.md
-
-# 영문판 설치
-cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md
+cp SKILL.ko.md ~/.claude/skills/audit-monitor/SKILL.md  # 한글판
+# cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md  # 영문판
 ```
 
 설치한 뒤 자리표시자만 바꾸면 됩니다.
 
 - `[대상 기관]`, `[운영자 직위]`, `[운영자 성명]`
-- `[감시 기간]`, `[청문일]`, `[종료 설문 URL]`
+- `[종료 설문 URL]`
 - "회기 전 준비"에 있는 참조 URL (예시는 서울특별시의회)
 
 실명, 내부 채널, 고정된 날짜는 들어 있지 않습니다. 참조 URL은 서울특별시의회 기준이라, 다른 의회에 쓸 때는 해당 의회 주소로 바꾸면 됩니다.
