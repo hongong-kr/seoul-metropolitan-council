@@ -23,8 +23,8 @@ Works with any AI agent that reads skills — Claude Code, Codex, Muse, and othe
 | 📺 Live monitoring | Checks about every 5 minutes — alerts for start, recess, resume, end, and relevant hits |
 | 💬 Subtitle-state handling | A six-case decision tree for when captions are live, missing, stalled, or recovering |
 | 📝 Minutes (two stages) | Provisional minutes from the VOD (ASR), corrected after cross-checking the official transcript |
-| 🏛️ Hearing-day live table | On the audited body's own hearing day, a live table of each member's questions, answers, and document requests |
-| 💬 Message templates | Ready-to-use templates: opening notice, day plan, hearing-day notice, live-update alert, closing, and feedback request |
+| 🏛️ Audit-day live table | On the audited body's own audit day, a live table of each member's questions, answers, and document requests |
+| 💬 Message templates | Ready-to-use templates: opening notice, day plan, audit-day notice, live-update alert, closing, and feedback request |
 | 🛠️ Tooling references | Recording (yt-dlp, streamlink), transcription (WhisperX, WhisperLiveKit), interval caption checks (jiffshot) |
 
 ## How it works
@@ -33,7 +33,7 @@ Works with any AI agent that reads skills — Claude Code, Codex, Muse, and othe
 flowchart LR
     A[Pre-session prep] --> B[Livestream monitoring<br/>about every 5 min]
     B --> C[Real-time alerts]
-    B --> D[Hearing-day live table]
+    B --> D[Audit-day live table]
     D --> E[VOD published<br/>provisional minutes]
     E --> F[Official transcript<br/>corrected minutes]
 ```
