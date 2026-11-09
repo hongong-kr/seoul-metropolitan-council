@@ -1,15 +1,17 @@
 🌐 [한국어](README.md) | [English](README.en.md)
 
-![감사 모니터링](assets/banner.svg)
+![서울시의회 생중계 모니터링](assets/banner.svg)
 
-# 감사 모니터링
+# 서울시의회 생중계 모니터링
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![한국어](https://img.shields.io/badge/lang-%ED%95%9C%EA%B5%AD%EC%96%B4-blue.svg)](README.md)
 [![English](https://img.shields.io/badge/lang-English-green.svg)](README.en.md)
-[![Skill](https://img.shields.io/badge/skill-audit--monitor-orange.svg)](SKILL.md)
+[![Skill](https://img.shields.io/badge/skill-council--live--monitor-orange.svg)](SKILL.md)
 
-지방의회 행정사무감사 생중계, AI에게 맡기세요. 감시 기간 내내 생중계를 지켜보고, 관련 질의가 나오면 그룹에 바로 알리고, 회의록은 잠정본에서 정정본까지 두 단계로 정리합니다.
+서울시의회 회기중 생중계, AI에게 맡기세요. 회기 내내 생중계를 지켜보고, 관련 질의가 나오면 지정한 채널로 바로 알리고, 회의록은 잠정본에서 정정본까지 두 단계로 정리합니다.
+
+핵심 용도는 행정사무감사 기간의 실시간 모니터링과 회의록 작성입니다.
 
 Claude Code, Codex, Muse 등 스킬을 읽는 AI 에이전트에서 쓸 수 있습니다.
 
@@ -53,15 +55,15 @@ cp SKILL.md ~/.claude/skills/audit-monitor/SKILL.md
 - `[감시 기간]`, `[청문일]`, `[종료 설문 URL]`
 - "회기 전 준비"에 있는 참조 URL (예시는 서울특별시의회)
 
-스킬은 범용으로 썼습니다. 실명, 내부 채널, 고정된 날짜는 들어 있지 않습니다.
+실명, 내부 채널, 고정된 날짜는 들어 있지 않습니다. 참조 URL은 서울특별시의회 기준이라, 다른 의회에 쓸 때는 해당 의회 주소로 바꾸면 됩니다.
 
 ## 잠깐만
 
-⭐ 마음에 들면 스타 하나 눌러주세요. 다음 감사 때 또 쓰게 될 겁니다.
+⭐ 마음에 들면 스타 하나 눌러주세요. 다음 회기 때 또 쓰게 될 겁니다.
 
 ## 출처
 
-2026년 의회 감사 모니터링 운영(11월 6~13일)에 쓴 업무 매뉴얼의 절차를 일반화한 것입니다. 내부 세부사항은 뺐습니다. 전사와 실시간 모니터링 참고자료는 깃허브에서 찾았습니다.
+2026년 서울시의회 행정사무감사 모니터링 운영(11월 6~13일)에 쓴 업무 매뉴얼의 절차를 일반화한 것입니다. 내부 세부사항은 뺐습니다. 전사와 실시간 모니터링 참고자료는 깃허브에서 찾았습니다.
 
 ## 라이선스
 
