@@ -235,7 +235,7 @@ details.doc[open ] > summary{border-bottom:1px solid var(--line)}
   .toc ol{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:2px}
 }
 @media print{
-  .toc,.controls,#toTop,#progress{display:none !important}
+  .toc,.controls,.search-bar,#toTop,#progress{display:none !important}
   .layout{grid-template-columns:1fr}
   details.doc{break-inside:avoid-page}
 }
@@ -244,10 +244,34 @@ details.doc[open ] > summary{border-bottom:1px solid var(--line)}
   .doc-chev{transition:none}
 }
 button,[role="button"],summary{min-height:2rem}
+
+/* ---------- keyword search ---------- */
+.search-bar{position:sticky; top:0; z-index:55; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 0}
+.search-bar-inner{max-width:1180px; margin:0 auto; padding:0 20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.search-bar input[type="search"]{flex:1; min-width:0; font:inherit; font-size:15px; padding:9px 12px; border:1px solid var(--line-strong); border-radius:10px; background:var(--surface); color:var(--ink)}
+.search-bar input[type="search"]:focus{outline:2px solid var(--accent); outline-offset:1px}
+.search-bar .search-count{min-width:70px; text-align:right; color:var(--muted); font-size:14px; white-space:nowrap}
+.search-bar button{font:inherit; font-size:14px; padding:8px 12px; border-radius:10px; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); cursor:pointer}
+.search-bar button:hover{border-color:var(--accent)}
+mark.search-hit{background:#ffe08a; color:#221c17; border-radius:2px; padding:0 1px}
+mark.search-hit.search-current{background:#f5a623; color:#fff; outline:2px solid #b97e1a}
+@media (prefers-color-scheme: dark){
+  mark.search-hit{background:#8a6d1f; color:#fff}
+  mark.search-hit.search-current{background:#e69a17; color:#171310}
+}
 </style>
 </head>
 <body>
 <div id="progress" aria-hidden="true"></div>
+<div class="search-bar" role="search">
+  <div class="search-bar-inner">
+    <input type="search" id="searchInput" placeholder="문서 안에서 키워드 검색 (예: 따릉이, 고척돔, 수의계약) — / 키로 바로 이동" aria-label="문서 안 키워드 검색" autocomplete="off">
+    <span class="search-count" id="searchCount" aria-live="polite"></span>
+    <button type="button" id="searchPrev" aria-label="이전 검색 결과">▲ 이전</button>
+    <button type="button" id="searchNext" aria-label="다음 검색 결과">▼ 다음</button>
+    <button type="button" id="searchClear" aria-label="검색 지우기">✕</button>
+  </div>
+</div>
 <div class="wrap">
 
 <header class="page-head">
@@ -604,6 +628,96 @@ https://hongong-kr.github.io/2026-monitor-survey/
   document.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
   toTop.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  // Keyword search across all 11 documents (opens closed docs as needed)
+  var searchInput = document.getElementById('searchInput');
+  var searchCount = document.getElementById('searchCount');
+  var searchPrev = document.getElementById('searchPrev');
+  var searchNext = document.getElementById('searchNext');
+  var searchClear = document.getElementById('searchClear');
+  var docsMain = document.getElementById('docs');
+  var hits = [], cur = -1, lastQuery = '';
+  function updateCount(){
+    searchCount.textContent = hits.length ? (cur + 1) + ' / ' + hits.length + '건' : (lastQuery ? '0건' : '');
+  }
+  function clearHits(){
+    hits = []; cur = -1;
+    var marks = docsMain.querySelectorAll('mark.search-hit');
+    for(var i = 0; i < marks.length; i++){
+      var m = marks[i], parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    }
+    updateCount();
+  }
+  function openAncestors(mark){
+    var el = mark;
+    while(el){
+      if(el.tagName === 'DETAILS' && !el.open) el.open = true;
+      el = el.parentElement;
+    }
+  }
+  function showHit(i, scroll){
+    if(!hits.length) return;
+    cur = ((i % hits.length) + hits.length) % hits.length;
+    for(var j = 0; j < hits.length; j++) hits[j].classList.remove('search-current');
+    var m = hits[cur];
+    m.classList.add('search-current');
+    openAncestors(m);
+    if(scroll !== false) m.scrollIntoView({ block: 'center' });
+    updateCount();
+  }
+  function doSearch(q){
+    clearHits();
+    q = (q || '').replace(/^\s+|\s+$/g, '');
+    lastQuery = q;
+    if(!q) return;
+    var lower = q.toLowerCase();
+    var walker = document.createTreeWalker(docsMain, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node){
+        if(!node.nodeValue || node.nodeValue.toLowerCase().indexOf(lower) === -1) return NodeFilter.FILTER_REJECT;
+        var p = node.parentNode;
+        if(p && (p.tagName === 'SCRIPT' || p.tagName === 'STYLE')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node){
+      var text = node.nodeValue, ltext = text.toLowerCase(), frag = document.createDocumentFragment();
+      var idx = 0, pos;
+      while((pos = ltext.indexOf(lower, idx)) !== -1){
+        if(pos > idx) frag.appendChild(document.createTextNode(text.slice(idx, pos)));
+        var mark = document.createElement('mark');
+        mark.className = 'search-hit';
+        mark.textContent = text.slice(pos, pos + q.length);
+        frag.appendChild(mark);
+        hits.push(mark);
+        idx = pos + q.length;
+      }
+      if(idx < text.length) frag.appendChild(document.createTextNode(text.slice(idx)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    if(hits.length){ cur = 0; showHit(0); }
+    updateCount();
+  }
+  var searchTimer = null;
+  searchInput.addEventListener('input', function(){
+    if(searchTimer) clearTimeout(searchTimer);
+    searchTimer = setTimeout(function(){ doSearch(searchInput.value); }, 200);
+  });
+  searchInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); showHit(cur + (e.shiftKey ? -1 : 1)); }
+    else if(e.key === 'Escape'){ searchInput.value = ''; clearHits(); searchInput.blur(); }
+  });
+  searchNext.addEventListener('click', function(){ showHit(cur + 1); });
+  searchPrev.addEventListener('click', function(){ showHit(cur - 1); });
+  searchClear.addEventListener('click', function(){ searchInput.value = ''; clearHits(); searchInput.focus(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){
+      e.preventDefault(); searchInput.focus();
+    }
+  });
 
   // Print with everything expanded
   window.addEventListener('beforeprint', function(){ setAll(true, true); });
